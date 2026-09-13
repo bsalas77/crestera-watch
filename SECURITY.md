@@ -10,7 +10,10 @@ If you believe you've found a security vulnerability in Crestera Watch, please
 report it privately so it can be fixed before public disclosure.
 
 - **Do not** open a public issue for security problems.
-- Email **barry.salas@gmail.com** with:
+- Report it through GitHub: open this repository's **Security** tab and choose
+  **Report a vulnerability**. The report stays private between you and the
+  maintainer.
+- Or email **barry.salas@gmail.com**. Either way, include:
   - a description of the issue and its impact,
   - steps to reproduce (proof-of-concept if possible),
   - affected version / commit.
@@ -40,5 +43,7 @@ non-loopback address unless you explicitly opt in), configure a strong admin
 password or wire up SSO/LDAP/SAML, use the Postgres standard profile with a
 network-restricted database, and set `CRESTERAWATCH_TRUSTED_PROXIES` if you run
 behind a reverse proxy or load balancer (otherwise `X-Forwarded-For` is
-ignored for login-lockout purposes, by design). CI runs `govulncheck` against
-production dependencies on every change.
+ignored for login-lockout purposes, by design). Dependencies are checked with
+`govulncheck` on every change and again every week, so a vulnerability published
+against a dependency is caught even when nothing has been committed, and the
+full source history is scanned for committed secrets.
