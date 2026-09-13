@@ -1,0 +1,65 @@
+Crestera Watch Free Edition License
+Copyright (c) 2026 Barry Salas. All rights reserved.
+
+This license covers the Crestera Watch Free edition: the software in this
+repository as distributed and run without a paid license key. It does not
+cover the Crestera Watch Pro edition, which is licensed separately under terms
+provided at the time of purchase.
+
+1. What you may do
+
+You may download, install, and run Crestera Watch Free, for any number of hosts,
+for as long as you like, at no cost, for your own organization's internal
+use — including commercial use inside your own organization. You may modify
+your own local copy to fix bugs or adapt it to your environment. You may
+make copies for your own backup and deployment purposes.
+
+2. What you may not do
+
+You may not redistribute, sell, sublicense, or host Crestera Watch (modified or
+not) as a product or service for others, without our prior written
+permission. You may not remove or alter any copyright, license, or
+attribution notice contained in the software. You may not use Crestera Watch's
+name, logo, or branding to imply endorsement of another product. You may
+not use the Free edition to build a competing SIEM or security-monitoring
+product offered to third parties.
+
+3. No warranty
+
+Crestera Watch Free is provided "AS IS," without warranty of any kind, express or
+implied, including but not limited to the warranties of merchantability,
+fitness for a particular purpose, and non-infringement. Use it at your own
+risk. In particular: Crestera Watch Free has not undergone an independent
+third-party security audit or penetration test (see
+docs/security/pentest-engagement.md for the current state of that work) —
+run your own evaluation before relying on it for anything security-critical.
+
+4. Limitation of liability
+
+To the maximum extent permitted by law, in no event will the copyright
+holder be liable for any claim, damages, or other liability, whether in an
+action of contract, tort, or otherwise, arising from, out of, or in
+connection with Crestera Watch or its use.
+
+5. Third-party components
+
+Crestera Watch is built on a number of open-source libraries, each under its own
+license. None of them require Crestera Watch itself to be open-sourced. See
+THIRD-PARTY-NOTICES.md for the full list and license texts.
+
+6. Termination
+
+This license terminates automatically if you breach any of its terms. Upon
+termination you must stop using Crestera Watch Free and destroy any copies in
+your possession.
+
+7. Changes to this license
+
+Future versions of Crestera Watch Free may be released under an updated version
+of this license. Software already downloaded under this version keeps
+these terms.
+
+---
+
+Questions about licensing, or interested in the Pro edition or a different
+arrangement? Contact barry.salas@gmail.com.
