@@ -138,8 +138,11 @@ Restore replaces the current standard-profile data.
 Start from the project root:
 
 ```text
-docker compose -f deploy/docker-compose.yml up -d
+docker compose -f deploy/docker-compose.yml up -d --build
 ```
+
+Use `--build` on upgrades too, so the server image is rebuilt from the new
+binaries rather than reused. Data stays in the named volumes.
 
 Open:
 

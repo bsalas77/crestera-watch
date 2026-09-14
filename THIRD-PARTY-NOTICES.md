@@ -19,6 +19,7 @@ of the shipped binaries (`cmd/api`, `cmd/agent`, `cmd/collector`) via
 | github.com/beevik/etree | BSD-2-Clause |
 | github.com/buger/jsonparser | MIT |
 | github.com/crewjam/saml | BSD-2-Clause |
+| github.com/google/uuid | BSD-3-Clause |
 | github.com/dustin/go-humanize | MIT |
 | github.com/invopop/jsonschema | MIT |
 | github.com/jackc/pgpassfile | MIT |
@@ -288,6 +289,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Covers (copyright line per project): `bahlo/generic-list-go` and
 `remyoudompheng/bigfft` ("Copyright (c) 2009/2012 The Go Authors. All rights
+reserved."), `google/uuid` ("Copyright (c) 2009,2014 Google Inc. All rights
 reserved."), `golang.org/x/crypto`, `x/sync`, `x/sys`, `x/text`, and
 `modernc.org/memory` ("Copyright 2009 The Go Authors."), `modernc.org/libc`
 and `modernc.org/mathutil` (their own named authors — see each project's own

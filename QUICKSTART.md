@@ -32,8 +32,12 @@ Ships in the **Linux** package (and the source repo) as `deploy/docker-compose.y
 it is not included in the Windows package. From the unzipped Linux package:
 
 ```text
-docker compose -f deploy/docker-compose.yml up -d
+docker compose -f deploy/docker-compose.yml up -d --build
 ```
+
+`--build` matters when you upgrade: it rebuilds the server image from the new
+package instead of reusing the old one. Your data lives in Docker volumes and
+carries over.
 
 Open:
 
