@@ -88,7 +88,9 @@ sudo bash deploy/linux/install-agent.sh --server https://SERVER-IP:8080 --enroll
 
 ## Agent Identity
 
-Agents use one-time enrollment tokens instead of a shared token. After enrollment, the agent sends:
+Agents use one-time enrollment tokens instead of a shared token. A token enrolls exactly one host. For 10 minutes after its first use, that same host (and no other) may redeem it again; this covers antivirus that runs a new agent once in a sandbox before letting it run for real. Each redemption issues a new agent credential and the previous one stops working. A revoked agent cannot use that window to come back; it needs a new token.
+
+After enrollment, the agent sends:
 
 - `Authorization: Bearer <agent-token>`
 - `X-CresteraWatch-Agent-ID: <agent-id>`

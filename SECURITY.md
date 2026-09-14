@@ -38,8 +38,9 @@ a release and watch for updates.
 ## Deploying securely
 
 Before exposing a deployment to untrusted networks: set `CRESTERAWATCH_TLS_CERT_FILE`
-/ `CRESTERAWATCH_TLS_KEY_FILE` (the server refuses to serve plaintext HTTP on a
-non-loopback address unless you explicitly opt in), configure a strong admin
+/ `CRESTERAWATCH_TLS_KEY_FILE` (the server refuses to serve plaintext HTTP at all
+unless you explicitly opt in, and warns when that plaintext listener isn't on
+loopback), configure a strong admin
 password or wire up SSO/LDAP/SAML, use the Postgres standard profile with a
 network-restricted database, and set `CRESTERAWATCH_TRUSTED_PROXIES` if you run
 behind a reverse proxy or load balancer (otherwise `X-Forwarded-For` is
