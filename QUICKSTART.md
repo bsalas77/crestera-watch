@@ -3,7 +3,11 @@
 ## Windows
 
 1. Unzip `cresterawatch-windows-deploy.zip`.
-2. In an **elevated** PowerShell, install the server as a Windows Service:
+2. Run `cresterawatch.exe`. It asks for administrator rights, installs the server
+   as the **CresteraWatchServer** Windows Service and prints the admin password.
+   The binaries aren't code-signed yet, so SmartScreen may say "Windows protected
+   your PC": choose **More info**, then **Run anyway**. For a scripted install,
+   use an **elevated** PowerShell in the unzipped folder instead:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-server.ps1
@@ -29,11 +33,19 @@ and HTTPS.
 ## Standard Docker Profile
 
 Ships in the **Linux** package (and the source repo) as `deploy/docker-compose.yml`;
-it is not included in the Windows package. From the unzipped Linux package:
+it is not included in the Windows package. From the unpacked Linux package, generate this deployment's secrets once, then
+start the stack:
 
-```text
+```bash
+bash deploy/docker-setup.sh
 docker compose -f deploy/docker-compose.yml up -d --build
 ```
+
+`docker-setup.sh` writes `deploy/.env` (readable only by you) with a random admin
+password, session secret and database password, and prints the admin password.
+The compose file has no default secrets, so it refuses to start until that file
+exists. Postgres, OpenSearch and VictoriaMetrics are only reachable by the server
+container, not from your network.
 
 `--build` matters when you upgrade: it rebuilds the server image from the new
 package instead of reusing the old one. Your data lives in Docker volumes and
@@ -53,7 +65,14 @@ handful of hosts. See `docs/deployment.md` for which profile to choose.
 
 Use this path for an Ubuntu laptop, Ubuntu server, or 64-bit Raspberry Pi OS.
 
-1. Unzip `cresterawatch-linux-deploy.zip`.
+1. Unpack the package. The `.tar.gz` needs nothing extra; the `.zip` needs
+   `unzip`, which a fresh Ubuntu doesn't have (`sudo apt install unzip`).
+
+```bash
+tar -xzf cresterawatch-linux-deploy.tar.gz
+cd cresterawatch-linux-deploy
+```
+
 2. Install the server:
 
 ```bash
@@ -89,7 +108,12 @@ systemctl status cresterawatch-api
 systemctl status cresterawatch-agent
 ```
 
-The Linux agent tails common system logs and tracks offsets in `/var/lib/cresterawatch-agent/log-offsets.json`.
+The Linux agent tails `/var/log/syslog`, `auth.log`, `messages` and `secure`, and
+tracks offsets in `/var/lib/cresterawatch-agent/log-offsets.json`. Debian 12 and
+later, and current Raspberry Pi OS, keep logs only in the systemd journal and
+don't write those files; install rsyslog there (`sudo apt install rsyslog`) or
+the agent will send metrics and inventory but no system logs. The agent installer
+warns when it finds none of the files.
 
 The Settings view includes local JSON backup and restore controls.
 
@@ -116,14 +140,20 @@ sudo systemctl restart cresterawatch-api
 ```
 
 On Windows the same two keys go in `cresterawatch.env` in the install directory,
-followed by `Restart-Service CresteraWatchServer`. `setup-tls-self-signed.sh`
-produces a certificate good enough for an internal lab; use one from your own CA
-or ACME for anything real, and point agents at it with `--tls-ca-file`.
+followed by `Restart-Service CresteraWatchServer`; see the HTTPS section of
+`README-WINDOWS.md`. On Linux, `deploy/linux/setup-tls-self-signed.sh` produces a
+certificate good enough for an internal lab; use one from your own CA or ACME for
+anything real, and point agents at it with `--tls-ca-file` (`-TlsCaFile` on
+Windows).
 
-**2. Replace the bootstrap admin.** The first run generates an admin password and
-writes it to `admin-credentials.json` in the data directory so you can get in.
-Create your own named accounts, then delete that file — it is a plaintext
-password sitting on disk.
+**2. Replace the bootstrap admin password.** The installer generates the first
+admin password and keeps it in a file: `/etc/cresterawatch/server.env` on Linux,
+`cresterawatch.env` in the install directory on Windows, `deploy/.env` for Docker
+(or `admin-credentials.json` in the data directory if you run the binary by hand).
+Change it in Settings, and create named accounts for the people who use the
+console. A password changed in the dashboard stays changed across restarts; the
+value in the file is only used to create the account. If you ever lose the admin
+password, put a new value in that file and restart the service.
 
 **3. Decide the storage profile before you load data.** The single-file store is
 the default and is fine for a small estate. Past roughly a dozen hosts, or if you

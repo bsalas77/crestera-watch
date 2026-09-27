@@ -41,7 +41,7 @@ of the shipped binaries (`cmd/api`, `cmd/agent`, `cmd/collector`) via
 | go.yaml.in/yaml/v4 | MIT |
 | golang.org/x/crypto, x/sync, x/sys, x/text | BSD-3-Clause |
 | gopkg.in/yaml.v3 | MIT |
-| modernc.org/libc | BSD-3-Clause (embeds separately-licensed third-party components — see its own `LICENSE-3RD-PARTY.md`) |
+| modernc.org/libc | BSD-3-Clause (embeds separately-licensed third-party components — see `LICENSE-3RD-PARTY.md` in its source at https://gitlab.com/cznic/libc) |
 | modernc.org/mathutil | BSD-3-Clause |
 | modernc.org/memory | BSD-3-Clause |
 | modernc.org/sqlite | BSD-3-Clause |

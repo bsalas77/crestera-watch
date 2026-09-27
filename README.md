@@ -7,7 +7,7 @@ hardware.
 The Free edition is free for any number of hosts inside your own organisation,
 commercial use included. No seat limits, no expiry, no quote process.
 
-**[Download the latest release](../../releases/latest)**
+Downloads and issue tracker: https://github.com/bsalas77/crestera-watch
 
 ---
 
@@ -44,17 +44,22 @@ Each release contains both the server and the agent for its platform.
 
 ## Install
 
-Unzip the package for your platform, then:
+Unpack the package for your platform, then:
 
-**Windows**, from an elevated PowerShell:
+**Windows:** run `cresterawatch.exe` (it asks for administrator rights). For a
+scripted install, from an elevated PowerShell in the unzipped folder:
 
 ```powershell
-.\install-server.ps1
+powershell -ExecutionPolicy Bypass -File .\install-server.ps1
 ```
+
+(Windows blocks scripts that came out of a downloaded zip unless they are started
+this way.)
 
 **Linux:**
 
 ```bash
+tar -xzf cresterawatch-linux-deploy.tar.gz && cd cresterawatch-linux-deploy
 sudo bash deploy/linux/preflight.sh
 sudo bash deploy/linux/install-server.sh
 sudo bash deploy/linux/verify-install.sh
@@ -117,4 +122,4 @@ it is the product with those modules held back.
 ## Feedback
 
 Issues, rough edges and "this document did not work for me" reports are wanted.
-Open an issue on this repository.
+Open an issue at https://github.com/bsalas77/crestera-watch/issues.

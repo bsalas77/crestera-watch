@@ -12,7 +12,7 @@ For a Windows Server or workstation. Installs as Windows Services.
 Package:
 
 ```text
-outputs\cresterawatch-windows-deploy.zip
+cresterawatch-windows-deploy.zip
 ```
 
 Contents:
@@ -40,7 +40,7 @@ Use this for an Ubuntu laptop, Ubuntu server, or 64-bit Raspberry Pi OS.
 Package:
 
 ```text
-outputs\cresterawatch-linux-deploy.zip
+cresterawatch-linux-deploy.tar.gz   (or .zip)
 ```
 
 Contents:
@@ -137,11 +137,34 @@ sudo bash deploy/restore-standard.sh backups/cresterawatch-standard-YYYYMMDDTHHM
 
 Restore replaces the current standard-profile data.
 
-Start from the project root:
+Start from the unpacked Linux package. The first time, generate this
+deployment's secrets:
 
-```text
+```bash
+bash deploy/docker-setup.sh
 docker compose -f deploy/docker-compose.yml up -d --build
 ```
+
+`docker-setup.sh` writes `deploy/.env` with a random admin password, session
+secret and Postgres password. The compose file has no fallback values for these,
+so the stack will not start without that file: a default published in the
+package would let anyone who has read it sign in. Only the API port (8080) is
+published; Postgres, OpenSearch and VictoriaMetrics are reachable only from the
+server container.
+
+**Upgrading from 2.0.x.** Earlier compose files used the fixed database password
+`cresterawatch` and published the database, OpenSearch and VictoriaMetrics ports.
+`docker-setup.sh` notices the existing database volume and keeps that password so
+the server can still connect; the ports are now closed. To rotate it afterwards:
+
+```bash
+docker compose -f deploy/docker-compose.yml exec postgres \
+  psql -U cresterawatch -d cresterawatch -c "ALTER USER cresterawatch PASSWORD 'NEW-PASSWORD'"
+# then set CRESTERAWATCH_POSTGRES_PASSWORD=NEW-PASSWORD in deploy/.env and:
+docker compose -f deploy/docker-compose.yml up -d
+```
+
+If your admin account still has the old default password, change it in Settings.
 
 Use `--build` on upgrades too, so the server image is rebuilt from the new
 binaries rather than reused. Data stays in the named volumes.
@@ -160,7 +183,7 @@ Crestera Watch includes a readiness endpoint:
 GET /api/readiness
 ```
 
-It returns the overall deployment state plus individual checks for local data write access, dashboard files, login/session configuration, retention configuration, and standard-mode services.
+It returns the overall deployment state (HTTP 200, or 503 when not ready) to anyone, which is what a load-balancer health check needs. The individual checks for data write access, dashboard files, login/session configuration, retention configuration and standard-mode services are only included for a signed-in user, since they describe how the deployment is set up.
 
 The Settings view includes a Deployment Status panel that shows the same checks. On Linux installs, use:
 

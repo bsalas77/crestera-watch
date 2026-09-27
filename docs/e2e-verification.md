@@ -2,8 +2,8 @@
 
 First full-stack run of Crestera Watch on real Linux: the Go server, the SQLite log
 engine, agent enrollment, search, Crestera Control forwarding, and Sigma import,
-all against a running server on an Ubuntu VM. Raw transcript:
-[e2e-ubuntu-2026-08-20.txt](e2e-ubuntu-2026-08-20.txt).
+all against a running server on an Ubuntu VM. (The raw transcript is kept with
+the source, not in the release package.)
 
 Everything below was observed on the VM, not reasoned about.
 

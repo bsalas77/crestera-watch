@@ -10,6 +10,7 @@ for a production rollout.
 | [vendor-security-questionnaire.md](vendor-security-questionnaire.md) | TPRM / security analysts | SIG-Lite / CAIQ-aligned self-assessment answering the standard vendor questionnaire. |
 | [../../SECURITY.md](../../SECURITY.md) | Everyone | Vulnerability-disclosure policy and secure-deployment pointer. |
 | [hardening-review-2026-08.md](hardening-review-2026-08.md) | Security analysts | Record of the August 2026 **internal** security review: what was checked, what was fixed, what's still open. An in-house review, **not** a third-party test. |
+| [release-review-2026-09.md](release-review-2026-09.md) | Security analysts | The September 2026 **internal** release review: the packages installed as a stranger would on Linux and Windows, then attacked. What was found, fixed and left open. |
 | [pentest-engagement.md](pentest-engagement.md) | Us, and the testing firm | Scope, system description, rules of engagement and pre-flight checklist for an independent penetration test. **The test has not been performed** — this is the packet that sets one up. |
 
 ## The short version
@@ -21,7 +22,7 @@ for a production rollout.
   OWASP's current iteration count, TOTP MFA (Free) and OIDC/SAML/LDAP SSO
   (Pro), server-side RBAC, a strict per-request-nonce CSP, and real Postgres
   row-level-security tenant isolation on the multi-tenant profile.
-- **Continuously tested** — 589 automated test functions, CI-gated build +
+- **Continuously tested** — 660 automated test functions, CI-gated build +
   vet + race-detector test suite + dependency vulnerability scan on every
   change, **zero known reachable vulnerabilities** in production
   dependencies.
@@ -34,9 +35,10 @@ One gap a reviewer will ask about and should hear about directly, not
 discover on their own:
 
 - **No third-party penetration test or SOC 2/ISO certification yet.** The
-  [August 2026 hardening review](hardening-review-2026-08.md) is an
-  **internal** self-review by the development team, published for
-  transparency about what's tested in-house. It is not a substitute for
-  either of the above and isn't presented as one. The
+  [August 2026 hardening review](hardening-review-2026-08.md) and the
+  [September 2026 release review](release-review-2026-09.md) are
+  **internal** self-reviews by the development team, published for
+  transparency about what's tested in-house. They are not a substitute for
+  either of the above and aren't presented as one. The
   [pentest engagement package](pentest-engagement.md) is scoped and ready to
   book — what's outstanding is the engagement itself.

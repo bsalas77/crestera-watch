@@ -4,7 +4,13 @@ Use the Linux deployment package for Ubuntu laptops, Ubuntu servers, and 64-bit 
 
 ## Server
 
-Unzip `cresterawatch-linux-deploy.zip` on the target machine.
+Unpack the package on the target machine. The `.tar.gz` needs nothing extra; the `.zip`
+needs `unzip` (`sudo apt install unzip` on a fresh Ubuntu).
+
+```bash
+tar -xzf cresterawatch-linux-deploy.tar.gz
+cd cresterawatch-linux-deploy
+```
 
 Install and start the server:
 
