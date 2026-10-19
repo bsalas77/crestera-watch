@@ -1,6 +1,6 @@
 # Crestera Watch
 
-A self-hosted SIEM for Windows and Linux. Collection, detections, threat
+A self-hosted SIEM, released for Linux. Collection, detections, threat
 hunting, automated response and compliance reporting, running on your own
 hardware.
 
@@ -40,27 +40,15 @@ NIST crosswalk, which is the distinction that costs a credit union a finding.
 
 ## Platforms
 
-- **Windows** — Server 2019 and later, Windows 10/11
 - **Linux** — amd64 and arm64: Ubuntu, Debian, RHEL family
 - **Raspberry Pi** — 64-bit Raspberry Pi OS
 
-Each release contains both the server and the agent for its platform.
+Each release contains the server and the Linux agent. The Windows server
+package and the Windows agent installer will follow as a code-signed release.
 
 ## Install
 
-Unpack the package for your platform, then:
-
-**Windows:** run `cresterawatch.exe` (it asks for administrator rights). For a
-scripted install, from an elevated PowerShell in the unzipped folder:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install-server.ps1
-```
-
-(Windows blocks scripts that came out of a downloaded zip unless they are started
-this way.)
-
-**Linux:**
+Unpack the Linux package, then:
 
 ```bash
 tar -xzf cresterawatch-linux-deploy.tar.gz && cd cresterawatch-linux-deploy
@@ -69,7 +57,7 @@ sudo bash deploy/linux/install-server.sh
 sudo bash deploy/linux/verify-install.sh
 ```
 
-Either way the installer prints a generated admin password and the dashboard
+The installer prints a generated admin password and the dashboard
 comes up on port 8080. Create an enrolment token there, then run the agent
 installer on each host you want to watch.
 

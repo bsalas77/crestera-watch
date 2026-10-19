@@ -1,39 +1,11 @@
 # Crestera Watch Quickstart
 
-## Windows
-
-1. Unzip `cresterawatch-windows-deploy.zip`.
-2. Run `cresterawatch.exe`. It asks for administrator rights, installs the server
-   as the **CresteraWatchServer** Windows Service and prints the admin password.
-   The binaries aren't code-signed yet, so SmartScreen may say "Windows protected
-   your PC": choose **More info**, then **Run anyway**. For a scripted install,
-   use an **elevated** PowerShell in the unzipped folder instead:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install-server.ps1
-```
-
-3. Note the generated `admin` password printed by the installer, then open:
-
-```text
-http://localhost:8080
-```
-
-4. Create an enrollment token in the dashboard (Agents view), then install the
-   agent on each host to monitor:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install-agent.ps1 -Server http://SERVER-IP:8080 -EnrollToken TOKEN
-```
-
-The agent enrolls with the one-time token and stores its own credentials under
-`C:\ProgramData\Crestera Watch\Agent`. See `README-WINDOWS.md` for service management
-and HTTPS.
+Releases are for Linux for now. The Windows server package and the Windows
+agent installer will follow as a code-signed release.
 
 ## Standard Docker Profile
 
-Ships in the **Linux** package (and the source repo) as `deploy/docker-compose.yml`;
-it is not included in the Windows package. From the unpacked Linux package, generate this deployment's secrets once, then
+Ships in the Linux package as `deploy/docker-compose.yml`. From the unpacked Linux package, generate this deployment's secrets once, then
 start the stack:
 
 ```bash
