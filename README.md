@@ -9,6 +9,10 @@ commercial use included. No seat limits, no expiry, no quote process.
 
 Downloads and issue tracker: https://github.com/bsalas77/crestera-watch
 
+Part of the Crestera family with [Crestera Scan](https://github.com/bsalas77/crestera-scan)
+(network discovery) and [Crestera Pulse](https://github.com/bsalas77/crestera-pulse)
+(executive dashboard); it needs neither.
+
 ---
 
 ## Why this exists
