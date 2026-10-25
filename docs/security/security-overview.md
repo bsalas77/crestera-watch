@@ -107,9 +107,15 @@ This is a **shared-responsibility** model:
   `WHERE tenant_id = ?` clause an application bug could omit. A connection
   that hasn't set its tenant context sees zero rows from a protected table,
   by construction.
-- **Every action is logged.** A tamper-evident audit trail records who did
-  what, and Crestera Watch is designed to be a source *for* your SIEM/monitoring
-  stack as much as a monitor itself.
+- **Every action is logged.** An audit trail records who did what, and
+  Crestera Watch is designed to be a source *for* your SIEM/monitoring stack
+  as much as a monitor itself.
+- **Agent logs are tamper-evident in transit (2.2).** Each agent signs every
+  log batch with its own key and chains it to the one before, so a missing,
+  replayed, altered or forged batch is detected and raises an alert instead
+  of being silently absorbed; a stolen agent token is not enough to forge an
+  agent's logs undetected. See *Log integrity* below for exactly what this
+  does and does not prove.
 - **It's kept patched.** Every change runs through automated tests and a
   dependency vulnerability scan (`govulncheck`) in CI before it ships; the
   product currently reports **zero known vulnerabilities** in its production
@@ -165,6 +171,29 @@ This is a **shared-responsibility** model:
 - **Log redaction:** server-side redaction strips common secret patterns
   (tokens, keys) from ingested log text before storage.
 
+### Log integrity
+Design and limits: [ADR-002](../architecture/adr-002-tamper-evident-logs.md).
+- **Signed, sequenced, hash-chained batches.** From 2.2 every agent holds an
+  Ed25519 key (`<credential file>.signing-key`, mode 0600) and seals each
+  log batch with a sequence number, the hash of the previous batch and a
+  signature, before it is sent or written to its offline buffer.
+- **Checked on arrival, never discarded.** The server verifies each batch
+  against the agent's chain. Verified events are stored as usual; anything
+  else is stored with a `log_integrity` field (`bad_signature`,
+  `chain_break`, `replay`, `unsigned`) so it can be searched, and raises
+  a built-in detection: *Agent log batch forged, altered or replayed*, *Agent
+  log batches missing*, or *Agent dropped log batches during an outage*.
+- **Admitted loss is distinguished from unexplained loss.** When an agent's
+  offline buffer overflows it reports exactly which batches it dropped; a gap
+  it cannot account for is a separate, higher-severity detection.
+- **Where trust ends.** A valid signature proves a batch is what the agent's
+  key signed. It does not prove the events are true: an attacker with root on
+  a monitored host can read that host's key. Syslog, NetFlow and webhook
+  sources cannot be signed at the source.
+- **Compatibility.** Agents older than 2.2 keep working and are shown as
+  "unsigned"; an unsigned batch from an agent that has signed before is a
+  downgrade and raises the tampering detection.
+
 ### Application security
 - **Content-Security-Policy** with a per-request nonce on every dashboard
   response.
@@ -205,7 +234,8 @@ This is a **shared-responsibility** model:
 - **Agent resilience:** the native agent retries failed submissions with
   exponential backoff and spools to a bounded local disk queue on sustained
   failure, so a server restart or network blip does not silently lose
-  telemetry.
+  telemetry. If the queue does overflow, the agent tells the server which
+  batches it dropped (see *Log integrity*).
 
 ### Regulatory alignment
 Automated, indicative coverage assessments against **9 published frameworks**
@@ -220,10 +250,16 @@ pass or fail.
 
 ## Known gaps, stated plainly
 
-One thing a security reviewer will likely ask about and not find:
+Things a security reviewer will likely ask about and not find:
 
 - **No SOC 2 or ISO 27001 vendor certification, and no completed independent
   penetration test** — see *Independent assurance* below.
+- **Stored logs and the audit trail are not yet hash-chained.** Agent log
+  batches are verified on arrival (see *Log integrity*), but nothing yet
+  proves the server's stored copy, or the audit trail, was not edited
+  afterwards by someone with database access. Signed checkpoints, a
+  `verify-logs` command and a hash-chained audit trail are planned as phase 2
+  of [ADR-002](../architecture/adr-002-tamper-evident-logs.md).
 
 ---
 

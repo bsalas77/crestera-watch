@@ -172,6 +172,16 @@ the hardening review.
 **F1. Is there audit logging?** [V] Yes — sensitive actions are recorded in
 an audit trail viewable in-app.
 
+**F1a. Are collected logs protected against tampering?** [V] In transit and
+at the source, yes, from 2.2: each agent signs, sequences and hash-chains its
+log batches, and the server detects missing, replayed, altered and forged
+batches, keeps them tagged, and raises a detection. [V] Not yet for data at
+rest: the stored copy and the audit trail are not hash-chained, so an
+administrator with database access could alter them undetected; signed
+checkpoints and a verification command are planned. [O] Restrict database
+access, and forward detections off-host. Details: docs/security/security-overview.md
+(*Log integrity*).
+
 **F2. Can logs feed our SIEM?** [S] Crestera Watch is itself commonly deployed
 *as* the SIEM; it also accepts events forwarded from other tools (e.g.
 Crestera Control) via an authenticated ingest endpoint, and can alert out to

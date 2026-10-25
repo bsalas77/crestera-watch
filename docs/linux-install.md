@@ -154,6 +154,22 @@ Agent credentials are stored at:
 /var/lib/cresterawatch-agent/credentials.json
 ```
 
+From 2.2 the agent signs its log batches (see
+[log integrity](security/security-overview.md#log-integrity)). Its signing key
+and the position of its log chain sit beside the credentials, readable by root
+only:
+
+```text
+/var/lib/cresterawatch-agent/credentials.json.signing-key
+/var/lib/cresterawatch-agent/credentials.json.chain
+```
+
+Back them up with the credentials, or not at all. If a host is restored from a
+backup older than its last log batch, or loses these files, the server sees
+batches signed by an unknown key or out of sequence and raises the log-tampering
+detection. If that was you, use **Reset** next to the agent on the Agents page
+(it is recorded in the audit trail), or enrol the agent again.
+
 Agent log offsets are stored at:
 
 ```text

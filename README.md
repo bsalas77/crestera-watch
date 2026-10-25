@@ -28,6 +28,7 @@ answer.
 |---|---|
 | **Collection** | Native agent per host for logs, metrics, inventory, file integrity and posture. Syslog and NetFlow for devices that cannot run an agent. Windows Event Log and Linux syslog/auth.log out of the box. |
 | **Detection** | Correlation and threshold rules over live telemetry, plus direct import from the Sigma community rule corpus. |
+| **Log integrity** | Agents sign and hash-chain every log batch, so missing, replayed, altered or forged batches are detected and alerted on, and kept for review rather than silently absorbed. [What it proves, and what it doesn't](docs/security/security-overview.md#log-integrity). |
 | **Hunting** | Structured query language across endpoint, network and audit data, with field faceting to narrow a result set. |
 | **Response** | Isolate a host, block an address or kill a process from the console. Every action lands in the audit trail. |
 | **Compliance** | Reporting mapped to nine frameworks, generated from what the agents actually observed. |
